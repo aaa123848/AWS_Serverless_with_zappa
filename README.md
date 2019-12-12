@@ -321,17 +321,17 @@ zappa_setting.json這東西請確定一定要擺在 manage.py 同樣的地方，
 
 MyProject
 
-	-.env
+/-.env
 
-	-Myproject
+/-Myproject
 
-		--Myproject
+/	--Myproject
 
-		--db.sqlite3
+/	--db.sqlite3
 
-		--manage.py
+/	--manage.py
 
-		--zappa_setting.json
+/	--zappa_setting.json
 
 筆者因為這沒擺到對的位置，卡了一天半，卡到夢到爺爺，很可憐的。
 
