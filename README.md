@@ -312,7 +312,10 @@ Does this look okay? (default 'y') [y/n]: y
 ```
 迴車(ENTER)
 
-然後他就會幫你在Myproject中創立一個zappa_setting.json 的檔案。
+
+
+
+以上步驟結束，ZAPPA就會幫你在Myproject中創立一個zappa_setting.json 的檔案。
 
 zappa_setting.json這東西請確定一定要擺在 manage.py 同樣的地方，架構上來說如下
 
