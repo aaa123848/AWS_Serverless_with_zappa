@@ -161,7 +161,6 @@ python setup.py install
 ```
 
 問題還是出現了，原來是setup.py 裡的解碼出問題，不能用cp950 讀，那我們就把它改成utf-8
-如下圖所示
 將第14行  
 
 ```
@@ -192,3 +191,203 @@ pip install zappa
 
 成功安裝
 
+
+## 建立Django 專案
+
+這部分沒啥神奇的，就是建立django 專案，建立就是create 的意思
+
+確認你在Myproject中
+
+然後建立
+
+django-admin startproject Myproject
+
+這時候你就可以發現你的MyProject 資料夾中 又冒出一個 Myproject資料夾
+這邊p分大小寫是故意的，讓各位大概分得清楚結構。
+
+目前結構大概為
+
+MyProject
+>.env
+>Myproject
+>>Myproject
+>>db.sqlite3
+>>manage.py
+
+進入Myproject
+
+```
+cd Myproject
+```
+
+輸入
+```
+python manage.py runserver
+```
+
+就可以利用django 自己的袖珍迷你伺服器進行測試
+
+將 http://127.0.0.1:8000/
+
+放入你瀏覽器的網址中，enter進去就可以看到django 專安設置成功的畫面
+
+接下來就是要把Django 部屬到AWS Lambda 上了。
+
+## 用ZAPPA 部屬
+
+在部屬前，確認你的 aws_access_key_id 與 aws_secret_access_key 已經放入/.aws/credemtials中，
+要不然ZAPPA 會沒有權限進行AWS 佈署，很可憐。
+
+接下來輸入
+```
+zappa init
+```
+
+然後ZAPPA 大招牌就跳出來歡迎你
+
+```
+███████╗ █████╗ ██████╗ ██████╗  █████╗
+╚══███╔╝██╔══██╗██╔══██╗██╔══██╗██╔══██╗
+  ███╔╝ ███████║██████╔╝██████╔╝███████║
+ ███╔╝  ██╔══██║██╔═══╝ ██╔═══╝ ██╔══██║
+███████╗██║  ██║██║     ██║     ██║  ██║
+╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝  ╚═╝
+Welcome to Zappa!
+Zappa is a system for running server-less Python web applications on AWS Lambda and AWS API Gateway.
+This `init` command will help you create and configure your new Zappa deployment.
+Let's get started!
+Your Zappa configuration can support multiple production stages, like 'dev', 'staging', and 'production'.
+What do you want to call this environment (default 'dev'):
+```
+
+首先我們佈署的stages 選dev, 這樣在APIGateway 那邊，ZAPPA就會幫你建立DEVELOP 的 STAGE
+
+```
+AWS Lambda and API Gateway are only available in certain regions. Let's check to make sure you have a profile set up in one that will work.
+We found the following profiles: default, and hdx. Which would you like us to use? (default 'default'): 
+```
+
+這邊ENTER 直接default 下去
+
+```
+Your Zappa deployments will need to be uploaded to a private S3 bucket.
+If you don't have a bucket yet, we'll create one for you too.
+What do you want call your bucket? (default 'zappa-108wqhyn4'): django-zappa-sample-bucket
+```
+
+幫你的s3水桶取個名子，s3水桶是要全球獨一無二的，所以可以根據你所在的時間與專案名取名。
+
+```
+It looks like this is a Django application!
+What is the module path to your projects's Django settings?
+We discovered: django_zappa_sample.settings
+Where are your project's settings? (default 'django_zappa_sample.settings'): 
+```
+ENTER
+```
+You can optionally deploy to all available regions in order to provide fast global service.
+If you are using Zappa for the first time, you probably don't want to do this!
+Would you like to deploy this application globally? (default 'n') [y/n/(p)rimary]: 
+```
+ENTER
+```
+{
+    "dev": {
+        "aws_region": "us-east-1", 
+        "django_settings": "django_zappa_sample.settings", 
+        "profile_name": "default", 
+        "project_name": "django-zappa-sa", 
+        "runtime": "python2.7", 
+        "s3_bucket": "django-zappa-sample-bucket"
+    }
+}
+
+
+Does this look okay? (default 'y') [y/n]: y
+```
+迴車(ENTER)
+
+然後他就會幫你在Myproject中創立一個zappa_setting.json 的檔案。
+
+zappa_setting.json這東西請確定一定要擺在 manage.py 同樣的地方，架構上來說如下
+
+MyProject
+>.env
+>Myproject
+>>Myproject
+>>db.sqlite3
+>>manage.py
+>>zappa_setting.json
+
+筆者因為這沒擺到對的位置，卡了一天半，卡到夢到爺爺，很可憐的。
+
+接下來進行部署了
+
+```
+zappa deploy dev
+```
+
+```
+Calling deploy for stage dev..
+Creating zappatest-dev-ZappaLambdaExecutionRole IAM Role..
+Creating zappa-permissions policy on zappatest-dev-ZappaLambdaExecutionRole IAM Role.
+Downloading and installing dependencies..
+Packaging project as zip..
+Uploading zappatest-dev-1496245095.zip (11.0MiB)..
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 11.5M/11.5M [00:15&lt;00:00, 751KB/s]
+Scheduling..
+Scheduled zappatest-dev-zappa-keep-warm-handler.keep_warm_callback!
+Uploading zappatest-dev-template-1496245132.json (1.6KiB)..
+100%|█████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1.61K/1.61K [00:01&lt;00:00, 1.23KB/s]
+Waiting for stack zappatest-dev to create (this can take a bit)..
+ 75%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████▎                                      | 3/4 [00:10&lt;00:05,  5.48s/res]
+Deploying API Gateway..
+Deployment complete!: https://hashrajwrlajlralhaojp.execute-api.us-west-2.amazonaws.com/dev
+```
+
+可以看看最下面，ZAPPA吐了一個網址給你，那個就是你網站的API了，你把它貼到瀏覽器上，
+就會出問題。
+
+你得把你的API 貼到 DJANGO 的 setting.py 的ALLOW_HOST中
+
+setting.py 在 MyProject/Myproject/Myproject中
+
+MyProject
+>.env
+>Myproject
+>>Myproject   <=這個資料夾立面
+>>>
+>>>setting.py
+>>>
+>>db.sqlite3
+>>manage.py
+>>zappa_setting.json
+
+打開setting.py
+然後找到ALLOW_HOST
+按以下輸入
+```
+ALLOWED_HOSTS = ['hashrajwrlajlralhaojp.execute-api.us-west-2.amazonaws.com', 
+    '127.0.0.1',
+    ]
+```
+
+這樣你的django 就允諾這個API了。
+
+至於'127.0.0.1' 是為了方便你之後本機端測試用
+
+不知道什麼意思就把'127.0.0.1'拿掉，然後
+
+```
+python manage.py runserver 
+```
+
+就知道了
+
+然後接下來要把你更新的CODE 更新到LAMBDA上
+
+```
+zappa update dev
+```
+
+就佈署上去了
