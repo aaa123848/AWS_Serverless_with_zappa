@@ -365,23 +365,23 @@ setting.py 在 MyProject/Myproject/Myproject中
 
 MyProject
 
--.env
+	-.env
 
--Myproject
+	-Myproject
 
---Myproject   <=這個資料夾立面
+		--Myproject   <=這個資料夾立面
 
---- ...
+			--- ...
 
----setting.py
+			---setting.py
 
---- ...
+			--- ...
 
---db.sqlite3
+		--db.sqlite3
 
---manage.py
+		--manage.py
 
---zappa_setting.json
+		--zappa_setting.json
 
 打開setting.py
 然後找到ALLOW_HOST
