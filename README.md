@@ -313,7 +313,7 @@ Does this look okay? (default 'y') [y/n]: y
 迴車(ENTER)
 
 
-
+===============================================================================
 
 以上步驟結束，ZAPPA就會幫你在Myproject中創立一個zappa_setting.json 的檔案。
 
@@ -360,6 +360,7 @@ Deployment complete!: https://hashrajwrlajlralhaojp.execute-api.us-west-2.amazon
 ```
 
 可以看看最下面，ZAPPA吐了一個網址給你，那個就是你網站的API了，你把它貼到瀏覽器上，
+
 就會出問題。
 
 你得把你的API 貼到 DJANGO 的 setting.py 的ALLOW_HOST中
