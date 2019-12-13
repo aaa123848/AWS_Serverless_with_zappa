@@ -207,17 +207,19 @@ django-admin startproject Myproject
 
 目前結構大概為
 
-MyProject
+```
+MyProject.
+├── .env
+├── Myproject                    
+    ├── Myproject         
+    ├── db.sqlite3       
+    ├── manage.py  
+    
+	        
 
-	-.env
 
-	-Myproject
 
-		--Myproject
-
-		--db.sqlite3
-
-		--manage.py
+```
 
 進入Myproject
 
@@ -319,19 +321,20 @@ Does this look okay? (default 'y') [y/n]: y
 
 zappa_setting.json這東西請確定一定要擺在 manage.py 同樣的地方，架構上來說如下
 
-MyProject
 
-/-.env
+```
+MyProject.
+├── .env
+├── Myproject                    
+    ├── Myproject         
+    ├── db.sqlite3       
+    ├── manage.py  
+    └── zappa_setting.json
+	        
 
-/-Myproject
 
-/	--Myproject
 
-/	--db.sqlite3
-
-/	--manage.py
-
-/	--zappa_setting.json
+```
 
 筆者因為這沒擺到對的位置，卡了一天半，卡到夢到爺爺，很可憐的。
 
@@ -367,25 +370,22 @@ Deployment complete!: https://hashrajwrlajlralhaojp.execute-api.us-west-2.amazon
 
 setting.py 在 MyProject/Myproject/Myproject中
 
-MyProject
+```
+MyProject.
+├── .env
+├── Myproject                    
+    ├── Myproject   
+	    ├── ...
+	    ├── setting.py
+	    ├── ...   
+    ├── db.sqlite3       
+    ├── manage.py  
+    └── zappa_setting.json
+	        
 
-	-.env
 
-	-Myproject
 
-		--Myproject   <=這個資料夾立面
-
-			--- ...
-
-			---setting.py
-
-			--- ...
-
-		--db.sqlite3
-
-		--manage.py
-
-		--zappa_setting.json
+```
 
 打開setting.py
 然後找到ALLOW_HOST
