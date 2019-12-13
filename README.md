@@ -238,7 +238,7 @@ python manage.py runserver
 
 接下來就是要把Django 部屬到AWS Lambda 上了。
 
-## 用ZAPPA 部屬
+## 用ZAPPA 部署
 
 在部屬前，確認你的 aws_access_key_id 與 aws_secret_access_key 已經放入/.aws/credemtials中，
 要不然ZAPPA 會沒有權限進行AWS 佈署，很可憐。
